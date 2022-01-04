@@ -3,22 +3,34 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsI
 
 const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-export async function createCharacter(character){
-    const newCharacter = {
-        ...character, 
-        user_id: client.auth.user().id, 
-    };
+// export async function createCharacter(character){
+//     const newCharacter = {
+//         ...character, 
+//         user_id: client.auth.user().id, 
+//     };
 
-    // use the newCharacter to create a single new character for this user in supabase
-    return checkError(response);
-}
+    
+
+//     // use the newCharacter to create a single new character for this user in supabase
+//     // eslint-disable-next-line no-undef
+//     return checkError(response);
+// }
 
 export async function updateHead(value){
     const currentUserId = client.auth.user().id;
-
+    
     // in supabase, update the head property
     // for the character whose user_id match's the currently logged in user's id
-
+    const response = await client
+    // update the row in the cities table
+        .from('characters')
+    // update that row's name
+        .update({ head: value })
+    // if the row's user id matche's this logged in user
+        .match({ user_id: currentUserId })
+    // and only do this to one thing. don't give me an array
+        .single();
+  
     return checkError(response);    
 }
 
@@ -28,6 +40,16 @@ export async function updateMiddle(value){
 
     // in supabase, update the middle property
     // for the character whose user_id match's the currently logged in user's id
+
+    const response = await client
+    // update the row in the cities table
+        .from('characters')
+    // update that row's name
+        .update({ middle: value })
+    // if the row's user id matche's this logged in user
+        .match({ user_id: currentUserId })
+    // and only do this to one thing. don't give me an array
+        .single();
 
     return checkError(response);    
 }
@@ -39,6 +61,16 @@ export async function updateBottom(value){
     // in supabase, update the bottom property
     // for the character whose user_id match's the currently logged in user's id
 
+    const response = await client
+
+        .from('characters')
+    // update that row's name
+        .update({ bottom: value })
+    // if the row's user id matche's this logged in user
+        .match({ user_id: currentUserId })
+    // and only do this to one thing. don't give me an array
+        .single();
+
     return checkError(response);    
 }
 
@@ -47,6 +79,17 @@ export async function updateChatchphrases(value){
 
     // in supabase, update the catchphrases property
     // for the character whose user_id match's the currently logged in user's id
+
+
+    const response = await client
+
+        .from('characters')
+    // update that row's name
+        .update({ catchphrases: value })
+    // if the row's user id matche's this logged in user
+        .match({ user_id: currentUserId })
+    // and only do this to one thing. don't give me an array
+        .single();
 
     return checkError(response);    
 }
@@ -66,6 +109,21 @@ export async function updateCharacter(part, value){
     return checkError(response);    
 }
 */
+
+export async function createDefaultChar() {
+    const response = await client
+        .from('characters')
+        .insert([
+            {
+                head: 'bird',
+                middle: 'blue',
+                bottom: 'leg',
+                catchphrases: ['I like pizza']
+            }
+        ]);
+
+    return checkError(response);
+}
 
 
 export async function getCharacter() {
@@ -114,5 +172,6 @@ export async function logout() {
 }
 
 function checkError({ data, error }) {
+    // eslint-disable-next-line no-console
     return error ? console.error(error) : data;
 }
