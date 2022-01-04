@@ -32,6 +32,8 @@ headDropdown.addEventListener('change', async() => {
     // increment the correct count in state
     headCount++;
     // update the head in supabase with the correct data
+    // headDropdown.selectedIndex = headDropdown.value;
+
     await updateHead(headDropdown.value);
 
     refreshData();
@@ -61,6 +63,7 @@ catchphraseButton.addEventListener('click', async() => {
     // go fetch the old catch phrases
     const char = await getCharacter();
     const catchphrase = char.catchphrases;
+    // console.log("🚀 ~ file: build.js ~ line 64 ~ catchphraseButton.addEventListener ~ catchphrase", typeof catchphrase)
     // console.log('🚀 ~ file: build.js ~ line 65 ~ catchphraseButton.addEventListener ~ catchphrase', catchphrase);
     catchphrase.push(catchphraseInput.value);
     await updateChatchphrases(catchphrase);
@@ -83,6 +86,9 @@ window.addEventListener('load', async() => {
         
     } else {
         await fetchAndDisplayCharacter();
+        headDropdown.value = char.head;
+        middleDropdown.value = char.middle;
+        bottomDropdown.value = char.bottom;
     }
     // create a new character with correct defaults for all properties (head, middle, bottom, catchphrases)
     // and put the character's catchphrases in state (we'll need to hold onto them for an interesting reason);
