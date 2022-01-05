@@ -133,7 +133,7 @@ export async function getCharacter() {
         .match({ user_id: client.auth.user().id, })
         .single();
 
-    return checkError(response);    
+    return checkError(response);
 }
 
 export async function getUser() {
